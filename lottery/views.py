@@ -14,7 +14,7 @@ from rest_framework import status
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
-    serializer_class = AccountSerializer
+    serializer_class = AccountSerializer    
 
 class SlotViewSet(viewsets.ModelViewSet):
     queryset = Slot.objects.all()
@@ -30,8 +30,8 @@ class SlotViewSet(viewsets.ModelViewSet):
             firstName=addFirst,
             lastName=addLast
         )
-        if obj not in slot.registeredAccounts.all():
-            slot.registeredAccounts.add(obj)
+        if obj not in slot.entries.all():
+            slot.entries.add(obj)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class LotteryViewSet(viewsets.ModelViewSet):
@@ -70,18 +70,16 @@ class RunLottery(APIView):
         for slot in slots:
             #TODO: add minimal wins filter
             if not lottery.isFinished:
-                minWinnersRegAccounts = slot.registeredAccounts.all()
+                minWinnersRegAccounts = slot.entries.all()
                 if minWinnersRegAccounts.count() > 0:
-                    slot.selectedAccount = random.choice(minWinnersRegAccounts)
+                    slot.winner = random.choice(minWinnersRegAccounts)
                     slot.save()
-            winners[slot.pk] = slot.selectedAccount.email
+            winners[slot.pk] = slot.winner.email
         
         lottery.isFinished = True
         lottery.save()
         
         return Response({'winners':winners})
-
-
 
 
 

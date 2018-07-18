@@ -8,16 +8,16 @@ class AccountSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SlotSerializer(serializers.HyperlinkedModelSerializer):
-    selectedAccount = serializers.StringRelatedField(read_only=True, )
-    registeredAccounts = serializers.StringRelatedField(many=True, allow_empty=True, )
-    registeredCount = serializers.SerializerMethodField()
+    winner = serializers.StringRelatedField(read_only=True, )
+    entries = serializers.StringRelatedField(many=True, allow_empty=True, )
+    entryCount = serializers.SerializerMethodField()
 
     class Meta:
         model = Slot
-        fields = ('pk', 'selectedAccount', 'registeredAccounts', 'registeredCount')
+        fields = ('pk', 'winner', 'entries', 'entryCount', )
 
-    def get_registeredCount(self, obj):
-        return obj.registeredAccounts.count()
+    def get_entryCount(self, obj):
+        return obj.entries.count()
 
 
 class LotterySerializer(serializers.HyperlinkedModelSerializer):

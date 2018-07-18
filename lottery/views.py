@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import random
 from .models import Slot, Lottery, Account
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -32,7 +34,6 @@ class SlotViewSet(viewsets.ModelViewSet):
             slot.registeredAccounts.add(obj)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 class LotteryViewSet(viewsets.ModelViewSet):
     queryset = Lottery.objects.all()
     serializer_class = LotterySerializer
@@ -57,3 +58,36 @@ class CreateSlotBatch(APIView):
             slot.save()
 
         return Response({'lotteryId':lottery.id})
+
+class RunLottery(APIView):
+
+    def post(self, request, *args, **kwargs):
+        lotteryId = request.data['lotteryId']
+        lottery = get_object_or_404(Lottery.objects.all(), pk=lotteryId)
+        slots = Slot.objects.filter(lottery=lottery)
+        
+        winners = {}
+        for slot in slots:
+            #TODO: add minimal wins filter
+            if not lottery.isFinished:
+                minWinnersRegAccounts = slot.registeredAccounts.all()
+                if minWinnersRegAccounts.count() > 0:
+                    slot.selectedAccount = random.choice(minWinnersRegAccounts)
+                    slot.save()
+            winners[slot.pk] = slot.selectedAccount.email
+        
+        lottery.isFinished = True
+        lottery.save()
+        
+        return Response({'winners':winners})
+
+
+
+
+
+
+
+
+
+
+

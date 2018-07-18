@@ -14,7 +14,7 @@ class SlotSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Slot
-        fields = ('pk', 'winner', 'entries', 'entryCount', )
+        fields = ('id', 'winner', 'entries', 'entryCount', )
 
     def get_entryCount(self, obj):
         return obj.entries.count()

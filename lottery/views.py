@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import random
+import jwt
 from .models import Slot, Lottery, Account
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -22,9 +23,12 @@ class SlotViewSet(viewsets.ModelViewSet):
 
     def partial_update(self, request, pk=None):    
         slot = get_object_or_404(self.queryset, pk=pk)
-        addEmail = request.data['addEmail']
-        addFirst = request.data['addFirst']
-        addLast = request.data['addLast']
+        header = request.META['HTTP_AUTHORIZATION'].replace("Bearer ", "")
+        jwtHeader = jwt.decode(header, verify=False)
+        addEmail = jwtHeader['email']
+        addFirst = jwtHeader['given_name']
+        addLast = jwtHeader['family_name']
+        isSelected = request.data['isSelected']
         obj, created = Account.objects.get_or_create(
             email=addEmail,
             firstName=addFirst,

@@ -25,7 +25,7 @@ class Lottery(models.Model):
 class Slot(models.Model):
 	lottery = models.ForeignKey(Lottery, related_name='slots', on_delete=models.CASCADE)
 	startTime = models.DateTimeField()
-	registeredAccounts = models.ManyToManyField(Account, related_name='slotsRegistered')
+	registeredAccounts = models.ManyToManyField(Account, related_name='slotsRegistered', blank=True)
 	selectedAccount = models.ForeignKey(
 		Account, 
 		related_name='slotsWon', 
@@ -38,7 +38,7 @@ class Slot(models.Model):
 
 	def __unicode__(self):
 		if (self.selectedAccount):
-			return self.startTime.strftime("%Y-%m-%d %H:%M:%S") + " - " + self.selectedAccount
+			return self.startTime.strftime("%Y-%m-%d %H:%M:%S") + " - " + self.selectedAccount.email
 		return self.startTime.strftime("%Y-%m-%d %H:%M:%S")
 
 

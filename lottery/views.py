@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from .models import Slot, Lottery
+from .models import Slot, Lottery, Account
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.views import APIView
-from .serializers import SlotSerializer, LotterySerializer
+from .serializers import SlotSerializer, LotterySerializer, AccountSerializer
 from datetime import datetime, timedelta
 from rest_framework.response import Response
 
+class AccountViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
 
 class SlotViewSet(viewsets.ModelViewSet):
     queryset = Slot.objects.all()
     serializer_class = SlotSerializer
-
-    def update(self, request, pk=None):
-        pass
 
 class LotteryViewSet(viewsets.ModelViewSet):
     queryset = Lottery.objects.all()

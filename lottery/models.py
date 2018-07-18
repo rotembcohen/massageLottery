@@ -5,8 +5,8 @@ from django.db import models
 
 class Account(models.Model):
 	email = models.EmailField(max_length=255)
-	firstName = models.CharField(max_length=255)
-	lastName = models.CharField(max_length=255)
+	firstName = models.CharField(max_length=255, blank=True, null=True)
+	lastName = models.CharField(max_length=255, blank=True, null=True)
 	winCount = models.PositiveIntegerField(default=0)
 	createdAt = models.DateTimeField(auto_now_add=True)
 	updatedAt = models.DateTimeField(auto_now=True)

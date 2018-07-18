@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from .serializers import SlotSerializer, LotterySerializer, AccountSerializer
 from datetime import datetime, timedelta
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from rest_framework import status
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
@@ -15,6 +17,21 @@ class AccountViewSet(viewsets.ModelViewSet):
 class SlotViewSet(viewsets.ModelViewSet):
     queryset = Slot.objects.all()
     serializer_class = SlotSerializer
+
+    def partial_update(self, request, pk=None):    
+        slot = get_object_or_404(self.queryset, pk=pk)
+        addEmail = request.data['addEmail']
+        addFirst = request.data['addFirst']
+        addLast = request.data['addLast']
+        obj, created = Account.objects.get_or_create(
+            email=addEmail,
+            firstName=addFirst,
+            lastName=addLast
+        )
+        if obj not in slot.registeredAccounts.all():
+            slot.registeredAccounts.add(obj)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class LotteryViewSet(viewsets.ModelViewSet):
     queryset = Lottery.objects.all()

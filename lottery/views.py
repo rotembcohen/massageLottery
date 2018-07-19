@@ -163,7 +163,7 @@ class Email():
                 'subject': 'Congratulations! You Won The Massage Lottery',
                 # 'text': 'You are getting a massage!',
                 'html': '<h3>So, it seems like you are getting a massage</h3><h4>Be at '
-                + slot_location + 'on ' + slot_time + '</h4> <p><img src="https://media.giphy.com/media/GqrLv648FAFkk/giphy.gif" width="636" height="341"></p><h1>Enjoy!</h1>',
+                + slot_location + ' on </h4><h3>' + slot_time + '</h3> <p><img src="https://media.giphy.com/media/GqrLv648FAFkk/giphy.gif" width="636" height="341"></p><h1>Enjoy!</h1>',
                 "from_email": "no.reply@wework.com",
                 "from_name": "NYCHQ Community Team",
                 'to': [{

@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import random
 import jwt
 import json
+from faker import Faker
 from .models import Slot, Lottery, Account
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -109,11 +110,14 @@ class CreateSlotBatch(APIView):
 class CreateAccountBatch(APIView):
 
     def post(self, request, *args, **kwargs):
+        faker = Faker()
+        Account.objects.all().delete()
         for i in xrange(100):
+            fake_name = faker.name().split(" ")
             Account.objects.create(
-                email="email"+str(i)+"@wework.com",
-                firstName="dude",
-                lastName="no"+str(i)
+                email=fake_name[0]+"."+fake_name[1]+"@wework.com",
+                firstName=fake_name[0],
+                lastName=fake_name[1]
             )
         return Response({'status':'ok'})
 

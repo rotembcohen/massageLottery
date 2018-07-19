@@ -76,12 +76,14 @@ class LotteryViewSet(viewsets.ModelViewSet):
                 if slot.winner:
                     winners[slot.pk] = slot.winner.email
                     #sends email
-                    emailClient.sendEmail(slot.winner.email, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                    # slotTimeStr = slot.startTime.strftime("%A, %B %d")
+                    # emailClient.sendEmail(slot.winner.email, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), lottery.location, slotTimeStr)
 
                 else:
                     winners[slot.pk] = None
             lottery.isFinished = True
             lottery.save()
+
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -153,12 +155,13 @@ class LotterySelection(APIView):
 
 class Email():
 
-    def sendEmail(self, user_email, send_at):
+    def sendEmail(self, user_email, send_at, slot_location, slot_time):
         try:
             message = {
                 'subject': 'Congratulations! You Won The Massage Lottery',
                 # 'text': 'You are getting a massage!',
-                'html': '<p>So, it seems like you are getting a massage</p> <p><img src="https://media.giphy.com/media/GqrLv648FAFkk/giphy.gif" width="636" height="341"></p><h1>Boom.</h1>',
+                'html': '<h3>So, it seems like you are getting a massage</h3><h4>Be at '
+                + slot_location + 'on ' + slot_time + '</h4> <p><img src="https://media.giphy.com/media/GqrLv648FAFkk/giphy.gif" width="636" height="341"></p><h1>Enjoy!</h1>',
                 "from_email": "no.reply@wework.com",
                 "from_name": "NYCHQ Community Team",
                 'to': [{

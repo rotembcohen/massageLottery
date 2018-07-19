@@ -21,7 +21,7 @@ class SlotViewSet(viewsets.ModelViewSet):
     queryset = Slot.objects.all()
     serializer_class = SlotSerializer
 
-    def partial_update(self, request, pk=None):    
+    def partial_update(self, request, pk=None):
         slot = get_object_or_404(self.queryset, pk=pk)
         header = request.META['HTTP_AUTHORIZATION'].replace("Bearer ", "")
         jwtHeader = jwt.decode(header, verify=False)
@@ -51,6 +51,29 @@ class LotteryViewSet(viewsets.ModelViewSet):
     queryset = Lottery.objects.all()
     serializer_class = LotterySerializer
 
+    def partial_update(self, request, pk=None):
+        isFinished = request.data['isFinished']
+        lottery = get_object_or_404(self.queryset, pk=pk)
+        if isFinished and not lottery.isFinished:
+            slots = Slot.objects.filter(lottery=lottery)
+        
+            winners = {}
+            for slot in slots:
+                #TODO: add minimal wins filter
+                if not lottery.isFinished:
+                    minWinnersRegAccounts = slot.entries.all()
+                    if minWinnersRegAccounts.count() > 0:
+                        slot.winner = random.choice(minWinnersRegAccounts)
+                        slot.save()
+                if slot.winner:
+                    winners[slot.pk] = slot.winner.email
+                else:
+                    winners[slot.pk] = None
+            lottery.isFinished = True
+            lottery.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 class CreateSlotBatch(APIView):
     
     def post(self, request, *args, **kwargs):
@@ -79,17 +102,7 @@ class RunLottery(APIView):
     def post(self, request, *args, **kwargs):
         lotteryId = request.data['lotteryId']
         lottery = get_object_or_404(Lottery.objects.all(), pk=lotteryId)
-        slots = Slot.objects.filter(lottery=lottery)
         
-        winners = {}
-        for slot in slots:
-            #TODO: add minimal wins filter
-            if not lottery.isFinished:
-                minWinnersRegAccounts = slot.entries.all()
-                if minWinnersRegAccounts.count() > 0:
-                    slot.winner = random.choice(minWinnersRegAccounts)
-                    slot.save()
-            winners[slot.pk] = slot.winner.email
         
         lottery.isFinished = True
         lottery.save()

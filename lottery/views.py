@@ -34,8 +34,8 @@ class SlotViewSet(viewsets.ModelViewSet):
         addEmail = jwtHeader['email']
         addFirst = jwtHeader['given_name']
         addLast = jwtHeader['family_name']
-        # if (addEmail.split("@")[1]) != "wework.com":
-        #     return Response({"error": "open only for wework employees"})
+        if (addEmail.split("@")[1]) != "wework.com":
+            return Response({"error": "open only for wework employees"})
         isSelected = request.data['isSelected']
         obj, created = Account.objects.get_or_create(
             email=addEmail,
@@ -111,12 +111,12 @@ class CreateSlotBatch(APIView):
                 slot.startTime = startTimeObject + i * interval * MINUTE
                 slot.save()
 
-        allAccounts = Account.objects.all()
-        allSlots = Slot.objects.filter(lottery=lottery)
-        for account in allAccounts:
-            slot = random.choice(allSlots)
-            slot.entries.add(account)
-            slot.save()
+        # allAccounts = Account.objects.all()
+        # allSlots = Slot.objects.filter(lottery=lottery)
+        # for account in allAccounts:
+        #     slot = random.choice(allSlots)
+        #     slot.entries.add(account)
+        #     slot.save()
 
         return Response({'lotteryId':lottery.id})
 

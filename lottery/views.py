@@ -111,7 +111,6 @@ class CreateAccountBatch(APIView):
 
     def post(self, request, *args, **kwargs):
         faker = Faker()
-        Account.objects.all().delete()
         for i in xrange(100):
             fake_name = faker.name().split(" ")
             Account.objects.create(

@@ -56,12 +56,14 @@ class CreateSlotBatch(APIView):
     def post(self, request, *args, **kwargs):
         DEFAULT_SLOT_INTERVAL = 20
         DEFAULT_SLOT_AMOUNT = 9
+        DEFAULT_LOCATION = "Conference Room 3A"
+
         MINUTE = timedelta(minutes=1)
 
         amount = DEFAULT_SLOT_AMOUNT
         interval = DEFAULT_SLOT_INTERVAL
 
-        lottery = Lottery.objects.create()
+        lottery = Lottery.objects.create(location=DEFAULT_LOCATION)
         startTimeObject = datetime.strptime(request.data['startTime'],'%Y-%m-%dT%H:%M:%S.%fZ')
 
         for i in xrange(amount):

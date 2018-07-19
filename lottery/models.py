@@ -15,6 +15,7 @@ class Account(models.Model):
 		return self.firstName + " " + self.lastName
 
 class Lottery(models.Model):
+	location = models.CharField(max_length=255)
 	isFinished = models.BooleanField(default=False)
 	createdAt = models.DateTimeField(auto_now_add=True)
 	updatedAt = models.DateTimeField(auto_now=True)

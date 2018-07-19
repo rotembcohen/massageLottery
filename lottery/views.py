@@ -34,7 +34,8 @@ class SlotViewSet(viewsets.ModelViewSet):
         addEmail = jwtHeader['email']
         addFirst = jwtHeader['given_name']
         addLast = jwtHeader['family_name']
-        if (addEmail.split("@")[1]) != "wework.com":
+        emailDomain = addEmail.split("@")[1]
+        if (emailDomain != "wework.com") and (emailDomain != "meetup.com"):
             return Response({"error": "open only for wework employees"})
         isSelected = request.data['isSelected']
         obj, created = Account.objects.get_or_create(

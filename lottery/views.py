@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import random
 import jwt
+import json
 from .models import Slot, Lottery, Account
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -97,17 +98,24 @@ class CreateSlotBatch(APIView):
 
         return Response({'lotteryId':lottery.id})
 
-class RunLottery(APIView):
+class LotterySelection(APIView):
 
-    def post(self, request, *args, **kwargs):
-        lotteryId = request.data['lotteryId']
+    def get(self, request, lotteryId, *args, **kwargs):
         lottery = get_object_or_404(Lottery.objects.all(), pk=lotteryId)
         
+        header = request.META['HTTP_AUTHORIZATION'].replace("Bearer ", "")
+        jwtHeader = jwt.decode(header, verify=False)
         
-        lottery.isFinished = True
-        lottery.save()
-        
-        return Response({'winners':winners})
+        account, created = Account.objects.get_or_create(
+            email=jwtHeader['email'],
+            firstName=jwtHeader['given_name'],
+            lastName=jwtHeader['family_name']
+        )
+
+        prevSlots = account.slotsRegistered.filter(lottery=lottery).values_list('pk',flat=True)
+
+        return Response(prevSlots)
+
 
 
 

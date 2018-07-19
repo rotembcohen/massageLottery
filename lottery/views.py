@@ -78,8 +78,8 @@ class LotteryViewSet(viewsets.ModelViewSet):
                 if slot.winner:
                     winners[slot.pk] = slot.winner.email
                     #sends email
-                    # slotTimeStr = slot.startTime.strftime("%A, %B %d, %H:%M")
-                    # emailClient.sendEmail(slot.winner.email, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), lottery.location, slotTimeStr)
+                    slotTimeStr = slot.startTime.strftime("%A, %B %d, %H:%M")
+                    emailClient.sendEmail(slot.winner.email, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), lottery.location, slotTimeStr)
 
                 else:
                     winners[slot.pk] = None

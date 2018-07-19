@@ -114,8 +114,11 @@ class LotterySelection(APIView):
         )
 
         prevSlots = account.slotsRegistered.filter(lottery=lottery).values_list('pk',flat=True)
-
-        return Response(prevSlots)
+        if len(prevSlots) > 0:
+            selectedSlotId = prevSlots[0]
+        else:
+            selectedSlotId = None
+        return Response({'selectedSlotId': selectedSlotId})
 
 
 

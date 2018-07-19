@@ -26,6 +26,6 @@ router.register(r'lottery', views.LotteryViewSet)
 urlpatterns = [
 	url(r'^', include(router.urls)),
 	url(r'^createBatch/', CreateSlotBatch.as_view()),
-	url(r'^lotterySelection/(?P<lotteryId>\d+)', LotterySelection.as_view()),
+	url(r'^lotterySelection/(?P<lotteryId>\d+)/', LotterySelection.as_view()),
     url(r'^admin/', admin.site.urls),
 ]

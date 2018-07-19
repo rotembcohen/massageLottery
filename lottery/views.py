@@ -97,7 +97,25 @@ class CreateSlotBatch(APIView):
                 slot.startTime = startTimeObject + i * interval * MINUTE
                 slot.save()
 
+        allAccounts = Account.objects.all()
+        allSlots = Slot.objects.filter(lottery=lottery)
+        for account in allAccounts:
+            slot = random.choice(allSlots)
+            slot.entries.add(account)
+            slot.save()
+
         return Response({'lotteryId':lottery.id})
+
+class CreateAccountBatch(APIView):
+
+    def post(self, request, *args, **kwargs):
+        for i in xrange(100):
+            Account.objects.create(
+                email="email"+str(i)+"@wework.com",
+                firstName="dude",
+                lastName="no"+str(i)
+            )
+        return Response({'status':'ok'})
 
 class LotterySelection(APIView):
 

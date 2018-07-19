@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
 from lottery import views
-from lottery.views import CreateSlotBatch, LotterySelection
+from lottery.views import CreateSlotBatch, LotterySelection, CreateAccountBatch
 
 router = routers.DefaultRouter()
 router.register(r'slot', views.SlotViewSet)
@@ -26,6 +26,7 @@ router.register(r'lottery', views.LotteryViewSet)
 urlpatterns = [
 	url(r'^', include(router.urls)),
 	url(r'^createBatch/', CreateSlotBatch.as_view()),
+	url(r'^createAccountBatch/', CreateAccountBatch.as_view()),
 	url(r'^lotterySelection/(?P<lotteryId>\d+)/', LotterySelection.as_view()),
     url(r'^admin/', admin.site.urls),
 ]

@@ -34,9 +34,18 @@ class SlotViewSet(viewsets.ModelViewSet):
             firstName=addFirst,
             lastName=addLast
         )
-        if obj not in slot.entries.all():
-            slot.entries.add(obj)
+
+        prevSlots = obj.slotsRegistered.filter(lottery=slot.lottery)
+        for prevSlot in prevSlots:
+            prevSlot.entries.remove(obj)
+
+        slotEntries = slot.entries.all()
+        if isSelected:
+            if obj not in slotEntries:
+                slot.entries.add(obj)
+
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class LotteryViewSet(viewsets.ModelViewSet):
     queryset = Lottery.objects.all()
@@ -84,7 +93,6 @@ class RunLottery(APIView):
         lottery.save()
         
         return Response({'winners':winners})
-
 
 
 

@@ -88,13 +88,14 @@ class CreateSlotBatch(APIView):
         interval = DEFAULT_SLOT_INTERVAL
 
         lottery = Lottery.objects.create(location=DEFAULT_LOCATION)
-        startTimeObject = datetime.strptime(request.data['startTime'],'%Y-%m-%dT%H:%M:%S.%fZ')
-
-        for i in xrange(amount):
-            slot = Slot()
-            slot.lottery = lottery
-            slot.startTime = startTimeObject + i * interval * MINUTE
-            slot.save()
+        startTimeArray = request.data['startTimes']
+        for startTime in startTimeArray:
+            startTimeObject = datetime.strptime(startTime,'%Y-%m-%dT%H:%M:%S.%fZ')
+            for i in xrange(amount):
+                slot = Slot()
+                slot.lottery = lottery
+                slot.startTime = startTimeObject + i * interval * MINUTE
+                slot.save()
 
         return Response({'lotteryId':lottery.id})
 

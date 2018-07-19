@@ -20,7 +20,7 @@ from lottery import views
 from lottery.views import CreateSlotBatch, RunLottery
 
 router = routers.DefaultRouter()
-router.register(r'slots', views.SlotViewSet, base_name='slot')
+router.register(r'slot', views.SlotViewSet)
 router.register(r'lottery', views.LotteryViewSet)
 
 urlpatterns = [

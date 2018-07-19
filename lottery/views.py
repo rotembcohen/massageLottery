@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 import random
 import jwt
 import json
+import mandrill
+from datetime import datetime
 from faker import Faker
 from .models import Slot, Lottery, Account
 from django.shortcuts import render
@@ -14,6 +16,8 @@ from datetime import datetime, timedelta
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+
+mandrill_client = mandrill.Mandrill('O8Jtn3GLlDfYQT0rfauUvA')
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
@@ -56,9 +60,11 @@ class LotteryViewSet(viewsets.ModelViewSet):
     def partial_update(self, request, pk=None):
         isFinished = request.data['isFinished']
         lottery = get_object_or_404(self.queryset, pk=pk)
+
         if isFinished and not lottery.isFinished:
             slots = Slot.objects.filter(lottery=lottery)
         
+            emailClient = Email()
             winners = {}
             for slot in slots:
                 #TODO: add minimal wins filter
@@ -69,6 +75,9 @@ class LotteryViewSet(viewsets.ModelViewSet):
                         slot.save()
                 if slot.winner:
                     winners[slot.pk] = slot.winner.email
+                    #sends email
+                    emailClient.sendEmail(slot.winner.email, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
                 else:
                     winners[slot.pk] = None
             lottery.isFinished = True
@@ -142,10 +151,39 @@ class LotterySelection(APIView):
         return Response({'selectedSlotId': selectedSlotId})
 
 
+class Email():
 
+    def sendEmail(self, user_email, send_at):
+        try:
+            message = {
+                'subject': 'Congratulations! You Won The Massage Lottery',
+                # 'text': 'You are getting a massage!',
+                'html': '<p>So, it seems like you are getting a massage</p> <p><img src="https://media.giphy.com/media/GqrLv648FAFkk/giphy.gif" width="636" height="341"></p><h1>Boom.</h1>',
+                "from_email": "no.reply@wework.com",
+                "from_name": "NYCHQ Community Team",
+                'to': [{
+                    'email': user_email,
+                     'name': user_email,
+                     'type': 'to'
+                },],
+                "async": False,
+                "ip_pool": "Main Pool",
+                "send_at": send_at,
+                "return_path_domain": None
+            }
 
+            mandrill_client.messages.send(
+                message=message, 
+                async=False, 
+                ip_pool='Main Pool', 
+                send_at='2018-07-15 12:00:00'
+            )
 
-
+        except mandrill.Error, e:
+            # Mandrill errors are thrown as exceptions
+            print 'A mandrill error occurred: %s - %s' % (e.__class__, e)
+            # A mandrill error occurred: <class 'mandrill.UnknownSubaccountError'> - No subaccount exists with the id 'customer-123'
+            raise
 
 
 

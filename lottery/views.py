@@ -93,7 +93,7 @@ class CreateSlotBatch(APIView):
     
     def post(self, request, *args, **kwargs):
         DEFAULT_SLOT_INTERVAL = 20
-        DEFAULT_SLOT_AMOUNT = 9
+        DEFAULT_SLOT_AMOUNT = 12
         DEFAULT_LOCATION = "Conference Room 3A"
 
         MINUTE = timedelta(minutes=1)

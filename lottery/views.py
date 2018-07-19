@@ -34,6 +34,8 @@ class SlotViewSet(viewsets.ModelViewSet):
         addEmail = jwtHeader['email']
         addFirst = jwtHeader['given_name']
         addLast = jwtHeader['family_name']
+        # if (addEmail.split("@")[1]) != "wework.com":
+        #     return Response({"error": "open only for wework employees"})
         isSelected = request.data['isSelected']
         obj, created = Account.objects.get_or_create(
             email=addEmail,
@@ -76,7 +78,7 @@ class LotteryViewSet(viewsets.ModelViewSet):
                 if slot.winner:
                     winners[slot.pk] = slot.winner.email
                     #sends email
-                    # slotTimeStr = slot.startTime.strftime("%A, %B %d")
+                    # slotTimeStr = slot.startTime.strftime("%A, %B %d, %H:%M")
                     # emailClient.sendEmail(slot.winner.email, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), lottery.location, slotTimeStr)
 
                 else:

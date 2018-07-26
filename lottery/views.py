@@ -70,10 +70,12 @@ class LotteryViewSet(viewsets.ModelViewSet):
             emailClient = Email()
             winners = {}
             for slot in slots:
-                #TODO: add minimal wins filter
                 if not lottery.isFinished:
-                    minWinnersRegAccounts = slot.entries.all()
-                    if minWinnersRegAccounts.count() > 0:
+                    if slot.entries.count() > 0:
+                        #find the minimum winCount between all accounts registered to slot
+                        winCountMin = slot.entries.aggregate(Min('winCount'))['winCount__min']
+                        minWinnersRegAccounts = slot.entries.filter(winCount=winCountMin)
+                    
                         slot.winner = random.choice(minWinnersRegAccounts)
                         slot.save()
                 if slot.winner:

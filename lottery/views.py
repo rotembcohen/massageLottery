@@ -81,6 +81,8 @@ class LotteryViewSet(viewsets.ModelViewSet):
                     
                         slot.winner = random.choice(minWinnersRegAccounts)
                         slot.save()
+                        slot.winner.winCount += 1
+                        slot.winner.save()
                 if slot.winner:
                     winners[slot.pk] = slot.winner.email
                     #sends email

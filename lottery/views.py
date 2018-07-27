@@ -5,6 +5,7 @@ import random
 import jwt
 import json
 import mandrill
+import pytz
 from datetime import datetime
 from faker import Faker
 from .models import Slot, Lottery, Account
@@ -64,6 +65,7 @@ class LotteryViewSet(viewsets.ModelViewSet):
     def partial_update(self, request, pk=None):
         isFinished = request.data['isFinished']
         lottery = get_object_or_404(self.queryset, pk=pk)
+        nycTz = pytz.timezone('America/New_York')
 
         if isFinished and not lottery.isFinished:
             slots = Slot.objects.filter(lottery=lottery)
@@ -82,7 +84,7 @@ class LotteryViewSet(viewsets.ModelViewSet):
                 if slot.winner:
                     winners[slot.pk] = slot.winner.email
                     #sends email
-                    slotTimeStr = slot.startTime.strftime("%A, %B %d, %H:%M")
+                    slotTimeStr = slot.startTime.astimezone(nycTz).strftime("%A, %B %d, %H:%M")
                     emailClient.sendEmail(slot.winner.email, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), lottery.location, slotTimeStr)
 
                 else:
@@ -108,7 +110,7 @@ class CreateSlotBatch(APIView):
         lottery = Lottery.objects.create(location=DEFAULT_LOCATION)
         startTimeArray = request.data['startTimes']
         for startTime in startTimeArray:
-            startTimeObject = datetime.strptime(startTime,'%Y-%m-%dT%H:%M:%S.%fZ')
+            startTimeObject = pytz.utc.localize(datetime.strptime(startTime,'%Y-%m-%dT%H:%M:%S.%fZ'))
             for i in xrange(amount):
                 slot = Slot()
                 slot.lottery = lottery

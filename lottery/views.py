@@ -118,6 +118,9 @@ class CreateSlotBatch(APIView):
         oldLottery = Lottery.objects.get(pk=DEFAULT_LOTTERY_ID)
         oldLottery.id = request.data['old_id']
         oldLottery.save()
+        for s in Slot.objects.filter(lottery_id = DEFAULT_LOTTERY_ID):
+            s.lottery_id = request.data['old_id']
+            s.save()
         lottery.id = DEFAULT_LOTTERY_ID
         lottery.save()
         

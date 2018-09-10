@@ -103,6 +103,7 @@ class CreateSlotBatch(APIView):
         DEFAULT_SLOT_INTERVAL = 20
         DEFAULT_SLOT_AMOUNT = 12
         DEFAULT_LOCATION = "Conference Room 3A"
+        DEFAULT_LOTTERY_ID = 18
 
         MINUTE = timedelta(minutes=1)
 
@@ -110,6 +111,16 @@ class CreateSlotBatch(APIView):
         interval = DEFAULT_SLOT_INTERVAL
 
         lottery = Lottery.objects.create(location=DEFAULT_LOCATION)
+
+        # for now, this is needed to force new lotteries to be id = 18
+        # so they will show in the homepage
+        #TODO: remove this when homepage is updated
+        oldLottery = Lottery.objects.get(pk=DEFAULT_LOTTERY_ID)
+        oldLottery.id = request.data['old_id']
+        oldLottery.save()
+        lottery.id = DEFAULT_LOTTERY_ID
+        lottery.save()
+        
         startTimeArray = request.data['startTimes']
         for startTime in startTimeArray:
             startTimeObject = pytz.utc.localize(datetime.strptime(startTime,'%Y-%m-%dT%H:%M:%S.%fZ'))

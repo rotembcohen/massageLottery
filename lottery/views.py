@@ -121,9 +121,13 @@ class CreateSlotBatch(APIView):
         for s in Slot.objects.filter(lottery_id = DEFAULT_LOTTERY_ID):
             s.lottery_id = request.data['old_id']
             s.save()
+        
+        idToDelete = lottery.id
         lottery.id = DEFAULT_LOTTERY_ID
         lottery.save()
-        
+        Lottery.objects.get(pk=idToDelete).delete()
+        # eof: remove this when homepage is updated
+
         startTimeArray = request.data['startTimes']
         for startTime in startTimeArray:
             startTimeObject = pytz.utc.localize(datetime.strptime(startTime,'%Y-%m-%dT%H:%M:%S.%fZ'))

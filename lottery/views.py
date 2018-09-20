@@ -100,26 +100,26 @@ class LotteryViewSet(viewsets.ModelViewSet):
 class CreateSlotBatch(APIView):
     
     def post(self, request, *args, **kwargs):
-        DEFAULT_SLOT_INTERVAL = 20
-        DEFAULT_SLOT_AMOUNT = 12
-        DEFAULT_LOCATION = "Conference Room 3A"
         DEFAULT_LOTTERY_ID = 18
+        ID_OFFSET = 100
 
         MINUTE = timedelta(minutes=1)
 
-        amount = DEFAULT_SLOT_AMOUNT
-        interval = DEFAULT_SLOT_INTERVAL
+        amount = request.data['slotAmount']
+        interval = request.data['slotDuration']
+        location = request.data['location']
 
-        lottery = Lottery.objects.create(location=DEFAULT_LOCATION)
+        lottery = Lottery.objects.create(location=location)
 
         # for now, this is needed to force new lotteries to be id = 18
         # so they will show in the homepage
         #TODO: remove this when homepage is updated
+        oldLotteryId = Lottery.objects.count() + ID_OFFSET
         oldLottery = Lottery.objects.get(pk=DEFAULT_LOTTERY_ID)
-        oldLottery.id = request.data['old_id']
+        oldLottery.id = oldLotteryId
         oldLottery.save()
         for s in Slot.objects.filter(lottery_id = DEFAULT_LOTTERY_ID):
-            s.lottery_id = request.data['old_id']
+            s.lottery_id = oldLotteryId
             s.save()
         
         idToDelete = lottery.id
@@ -137,14 +137,7 @@ class CreateSlotBatch(APIView):
                 slot.startTime = startTimeObject + i * interval * MINUTE
                 slot.save()
 
-        # allAccounts = Account.objects.all()
-        # allSlots = Slot.objects.filter(lottery=lottery)
-        # for account in allAccounts:
-        #     slot = random.choice(allSlots)
-        #     slot.entries.add(account)
-        #     slot.save()
-
-        return Response({'lotteryId':lottery.id})
+        return Response(status=status.HTTP_201_CREATED)
 
 class CreateAccountBatch(APIView):
 

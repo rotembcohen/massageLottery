@@ -111,7 +111,7 @@ class App extends Component {
 
     renderItem(item) {
         let itemTime = (new Date(item.startTime)).toLocaleString('en-GB', {timeZone: 'UTC'});
-        return (<List.Item>{itemTime} {item.winner?item.winner:"Open"}</List.Item>);
+        return (<List.Item>{itemTime} {item.winner?item.winner:"Open: "+item.entryCount+" registered"}</List.Item>);
     }
 
     render() {

@@ -40,7 +40,7 @@ class App extends Component {
     }
 
     loadCurrentLottery() {
-        fetch('/lottery/18/')
+        fetch('http://localhost:8000/lottery/18/')
             .then(response=>response.json())
             .then(data => this.setState({currentLottery:data}))
             .catch(error => console.error('Errors', error))
@@ -128,8 +128,8 @@ class App extends Component {
 
         let items = this.state.currentLottery ? this.state.currentLottery.slots : [];
         let currentFinished = this.state.currentLottery ? this.state.currentLottery.isFinished : true;
-        let renderExecuteButton = currentFinished ? (<Button onClick={this.executeLottery} type='danger' disabled>Execute</Button>)
-                : (<Button onClick={this.executeLottery} type='danger'>Execute</Button>);
+        let renderExecuteButton = currentFinished ? (<Button onClick={this.executeLottery} type='danger' icon='alert' disabled>Execute</Button>)
+                : (<Button onClick={this.executeLottery} type='danger' icon='alert'>Execute</Button>);
 
         return (
             <div className="App">
@@ -183,7 +183,7 @@ class App extends Component {
                                             format={"HH:mm"}
                                         />
                                     </Form.Item>
-                                    <Button onClick={this.handleSubmit} type="primary">Create</Button>
+                                    <Button onClick={this.handleSubmit} type="primary" icon='experiment'>Create</Button>
                                 </Form>
                             </Col>
                             <Col span={12}>

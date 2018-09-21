@@ -27,9 +27,9 @@ router.register(r'lottery', views.LotteryViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'^createBatch/', CreateSlotBatch.as_view()),
+    url(r'^createBatch/', csrf_exempt(CreateSlotBatch.as_view())),
     url(r'^createAccountBatch/', CreateAccountBatch.as_view()),
     url(r'^lotterySelection/(?P<lotteryId>\d+)/', LotterySelection.as_view()),
     url(r'^admin/', admin.site.urls),
-    url(r'^web/.*', csrf_exempt(TemplateView.as_view(template_name='index.html'))),
+    url(r'^web/.*', TemplateView.as_view(template_name='index.html')),
 ]

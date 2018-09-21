@@ -11,6 +11,26 @@ import Layout  from 'antd/lib/layout';
 import { Row, Col } from 'antd/lib/grid';
 const { Header, Footer, Content } = Layout;
 
+function getCookie(name) {
+  var cookieValue = null;
+
+  if (document.cookie && document.cookie != '') {
+    var cookies = document.cookie.split(';');
+
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = jQuery.trim(cookies[i]);
+
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) == (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+
+  return cookieValue;
+}
+
 class App extends Component {
     constructor() {
         super();
@@ -65,12 +85,14 @@ class App extends Component {
             this.stringifyDate(this.state.firstDate,this.state.firstTime),
             this.stringifyDate(this.state.secondDate,this.state.secondTime)
         ];
+
         fetch('/createBatch/',
             {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
                 },
                 body: JSON.stringify({
                     startTimes: startTimes,

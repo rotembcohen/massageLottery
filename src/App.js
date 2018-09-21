@@ -9,6 +9,7 @@ import Form from 'antd/lib/form';
 import InputNumber from 'antd/lib/input-number';
 import Layout  from 'antd/lib/layout';
 import { Row, Col } from 'antd/lib/grid';
+import Modal from 'antd/lib/modal';
 const { Header, Footer, Content } = Layout;
 
 function getCookie(name) {
@@ -43,7 +44,8 @@ class App extends Component {
             firstTime: moment().hour(11).minutes(0).seconds(0),
             secondDate: secondDate,
             secondTime: moment().hour(12).minutes(0).seconds(0),
-            currentLottery: null
+            currentLottery: null,
+            modalVisible: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -52,6 +54,19 @@ class App extends Component {
 
     componentDidMount() {
         this.loadCurrentLottery();
+    }
+
+    showModal = () => { this.setState({visible: true}) }
+    handleOk = (e) => {
+        this.executeLottery();
+        this.setState({
+            modalVisible: false,
+        });
+    }
+    handleCancel = (e) => {
+        this.setState({
+            modalVisible: false,
+        });
     }
 
     loadCurrentLottery() {
@@ -146,8 +161,8 @@ class App extends Component {
 
         let items = this.state.currentLottery ? this.state.currentLottery.slots : [];
         let currentFinished = this.state.currentLottery ? this.state.currentLottery.isFinished : true;
-        let renderExecuteButton = currentFinished ? (<Button onClick={this.executeLottery} type='danger' icon='alert' disabled>Execute</Button>)
-                : (<Button onClick={this.executeLottery} type='danger' icon='alert'>Execute</Button>);
+        let renderExecuteButton = currentFinished ? (<Button type='danger' icon='alert' disabled>Execute</Button>)
+                : (<Button onClick={this.showModal} type='danger' icon='alert'>Execute</Button>);
 
         return (
             <div className="App">
@@ -155,6 +170,14 @@ class App extends Component {
                     <Header className="App-header">
                         <h1 className="App-title">Massage Lottery Admin</h1>
                     </Header>
+                    <Modal
+                        title="Are you sure?"
+                        visible={this.state.modalVisible}
+                        onOk={this.handleOk}
+                        onCancel={this.handleCancel}
+                    >
+                        <p>Lottery will be closed and winners will be informed by email!</p>
+                    </Modal>
                     <Content className="Dashboard">
                         <Col className="col span_1_of_2">
                             <h1 className="SectionHeader">Create</h1>

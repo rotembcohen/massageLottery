@@ -52,6 +52,12 @@ body {
     padding: 20px;
 }
 
+#CreateForm {
+    padding: 20px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+}
+
 .textInput {
     max-width: 400px;
 }

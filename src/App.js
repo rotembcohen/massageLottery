@@ -40,7 +40,7 @@ class App extends Component {
     }
 
     loadCurrentLottery() {
-        fetch('/lottery/18/')
+        fetch('http://localhost:8000/lottery/18/')
             .then(response=>response.json())
             .then(data => this.setState({currentLottery:data}))
             .catch(error => console.error('Errors', error))
@@ -110,7 +110,7 @@ class App extends Component {
     }
 
     renderItem(item) {
-        let itemTime = (new Date(item.startTime)).toLocaleString('en-GB', {timeZone: 'UTC'});
+        let itemTime = (new Date(item.startTime)).toLocaleString('en-GB', {timeZone: 'America/New_York'});
         return (<List.Item>{itemTime} {item.winner?item.winner:"Open: "+item.entryCount+" registered"}</List.Item>);
     }
 

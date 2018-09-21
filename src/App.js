@@ -200,9 +200,9 @@ class App extends Component {
                                         format={"HH:mm"}
                                     />
                                 </Form.Item>
-                                <Form.Item className="ButtonContainer">
+                                <div className="ButtonContainer">
                                     <Button onClick={this.handleSubmit} type="primary" icon='experiment'>Create</Button>
-                                </Form.Item>
+                                </div>
                             </Form>
                         </Col>
                         <Col className="col span_1_of_2">

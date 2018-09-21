@@ -104,6 +104,7 @@ class CreateSlotBatch(APIView):
         ID_OFFSET = 100
 
         MINUTE = timedelta(minutes=1)
+        nycTz = pytz.timezone('America/New_York')
 
         amount = request.data['slotAmount']
         interval = request.data['slotDuration']
@@ -130,7 +131,7 @@ class CreateSlotBatch(APIView):
 
         startTimeArray = request.data['startTimes']
         for startTime in startTimeArray:
-            startTimeObject = pytz.utc.localize(datetime.strptime(startTime,'%Y-%m-%dT%H:%M:%S.%fZ'))
+            startTimeObject = nycTz.localize(datetime.strptime(startTime,'%Y-%m-%dT%H:%M:%S.%fZ'))
             for i in xrange(amount):
                 slot = Slot()
                 slot.lottery = lottery

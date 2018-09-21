@@ -19,6 +19,7 @@ from rest_framework import routers
 from lottery import views
 from lottery.views import CreateSlotBatch, LotterySelection, CreateAccountBatch
 from django.views.generic import TemplateView
+from django.views.decorators.csrf import csrf_exempt
 
 router = routers.DefaultRouter()
 router.register(r'slot', views.SlotViewSet)
@@ -30,5 +31,5 @@ urlpatterns = [
     url(r'^createAccountBatch/', CreateAccountBatch.as_view()),
     url(r'^lotterySelection/(?P<lotteryId>\d+)/', LotterySelection.as_view()),
     url(r'^admin/', admin.site.urls),
-    url(r'^web/.*', TemplateView.as_view(template_name='index.html')),
+    url(r'^web/.*', csrf_exempt(TemplateView.as_view(template_name='index.html'))),
 ]

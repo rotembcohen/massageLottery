@@ -162,7 +162,7 @@ class App extends Component {
 
         let items = this.state.currentLottery ? this.state.currentLottery.slots : [];
         let currentFinished = this.state.currentLottery ? this.state.currentLottery.isFinished : true;
-        let renderExecuteButton = currentFinished ? (<Button type='danger' icon='alert' onClick={this.showModal}>Execute</Button>)
+        let renderExecuteButton = currentFinished ? (<Button type='danger' icon='alert' disabled>Execute</Button>)
                 : (<Button onClick={this.showModal} type='danger' icon='alert'>Execute</Button>);
 
         return (

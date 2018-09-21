@@ -1,7 +1,6 @@
 @import '~antd/dist/antd.css';
 
 .App {
-    text-align: center;
     align-items: center;
     flex-direction: row;
 }
@@ -16,10 +15,10 @@ body {
 	display: block;
 	float:left;
 	margin: 1% 0 1% 1.6%;
+    padding-top: 20px;
 }
 
 .col:first-child { margin-left: 0; }
-
 
 .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -36,6 +35,8 @@ body {
 
 .App-title {
     font-size: 1.5em;
+    color: white;
+    font-weight: bold;
 }
 
 .App-intro {
@@ -55,12 +56,21 @@ body {
     max-width: 400px;
 }
 
+.ButtonContainer {
+    text-align: center;
+}
+
 .span_2_of_2 {
 	width: 100%;
 }
 
 .span_1_of_2 {
 	width: 49.2%;
+}
+
+.SectionHeader {
+    font-weight: bold;
+    text-align: center;
 }
 
 @media only screen and (max-width: 480px) {

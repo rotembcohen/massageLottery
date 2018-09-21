@@ -156,30 +156,29 @@ class App extends Component {
                         <h1 className="App-title">Massage Lottery Admin</h1>
                     </Header>
                     <Content className="Dashboard">
-
                         <Col className="col span_1_of_2">
-                            <h1>Create</h1>
+                            <h1 className="SectionHeader">Create</h1>
                             <Form id="CreateForm">
-                                <Form.Item {...formItemLayout} label="Slots Per Day:">
+                                <Form.Item className="formItem" {...formItemLayout} label="Slots Per Day:">
                                     <InputNumber
                                         value={this.state.slotAmount}
                                         onChange={e=>{this.setState({slotAmount:e.target.value})}}
                                     />
                                 </Form.Item>
-                                <Form.Item {...formItemLayout} label="Time Per Slot:">
+                                <Form.Item className="formItem" {...formItemLayout} label="Time Per Slot:">
                                     <InputNumber
                                         value={this.state.slotDuration}
                                         onChange={e=>{this.setState({slotDuration:e.target.value})}}
                                     />
                                 </Form.Item>
-                                <Form.Item {...formItemLayout} label="Location:">
+                                <Form.Item className="formItem" {...formItemLayout} label="Location:">
                                     <Input
                                         className="textInput"
                                         value={this.state.location}
                                         onChange={e=>{this.setState({location:e.target.value})}}
                                     />
                                 </Form.Item>
-                                <Form.Item {...formItemLayout} label="First Date:">
+                                <Form.Item className="formItem" {...formItemLayout} label="First Date:">
                                     <DatePicker
                                         value={this.state.firstDate}
                                         onChange={d=>{this.setState({firstDate:d})}}
@@ -190,7 +189,7 @@ class App extends Component {
                                         format={"HH:mm"}
                                     />
                                 </Form.Item>
-                                <Form.Item {...formItemLayout} label="Second Date:">
+                                <Form.Item className="formItem" {...formItemLayout} label="Second Date:">
                                     <DatePicker
                                         value={this.state.secondDate}
                                         onChange={d=>{this.setState({secondDate:d})}}
@@ -201,18 +200,21 @@ class App extends Component {
                                         format={"HH:mm"}
                                     />
                                 </Form.Item>
-                                <Button onClick={this.handleSubmit} type="primary" icon='experiment'>Create</Button>
+                                <Form.Item className="ButtonContainer">
+                                    <Button onClick={this.handleSubmit} type="primary" icon='experiment'>Create</Button>
+                                </Form.Item>
                             </Form>
                         </Col>
                         <Col className="col span_1_of_2">
-                            <h1>Manage</h1>
-                            {renderExecuteButton}
+                            <h1 className="SectionHeader">Manage</h1>
+                            <Row className="ButtonContainer">
+                                {renderExecuteButton}
+                            </Row>
                             <List
                                 dataSource={items}
                                 renderItem={this.renderItem}
                             />
                         </Col>
-
                     </Content>
                     <Footer/>
                 </Layout>

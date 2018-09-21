@@ -213,6 +213,8 @@ class App extends Component {
                             <List
                                 dataSource={items}
                                 renderItem={this.renderItem}
+                                bordered
+                                className="ItemList"
                             />
                         </Col>
                     </Content>

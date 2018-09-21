@@ -56,6 +56,10 @@ body {
     max-width: 400px;
 }
 
+.ItemList {
+    margin-top: 20px;
+}
+
 .ButtonContainer {
     text-align: center;
 }

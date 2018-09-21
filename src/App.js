@@ -40,7 +40,7 @@ class App extends Component {
     }
 
     loadCurrentLottery() {
-        fetch('http://localhost:8000/lottery/18/')
+        fetch('/lottery/18/')
             .then(response=>response.json())
             .then(data => this.setState({currentLottery:data}))
             .catch(error => console.error('Errors', error))

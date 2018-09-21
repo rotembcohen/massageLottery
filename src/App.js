@@ -138,63 +138,63 @@ class App extends Component {
                         <h1 className="App-title">Massage Lottery Admin</h1>
                     </Header>
                     <Content className="Dashboard">
-                        <Row>
-                            <Col span={12}>
-                                <h1>Create</h1>
-                                <Form id="CreateForm">
-                                    <Form.Item {...formItemLayout} label="Slots Per Day:">
-                                        <InputNumber
-                                            value={this.state.slotAmount}
-                                            onChange={e=>{this.setState({slotAmount:e.target.value})}}
-                                        />
-                                    </Form.Item>
-                                    <Form.Item {...formItemLayout} label="Time Per Slot:">
-                                        <InputNumber
-                                            value={this.state.slotDuration}
-                                            onChange={e=>{this.setState({slotDuration:e.target.value})}}
-                                        />
-                                    </Form.Item>
-                                    <Form.Item {...formItemLayout} label="Location:">
-                                        <Input
-                                            className="textInput"
-                                            value={this.state.location}
-                                            onChange={e=>{this.setState({location:e.target.value})}}
-                                        />
-                                    </Form.Item>
-                                    <Form.Item {...formItemLayout} label="First Date:">
-                                        <DatePicker
-                                            value={this.state.firstDate}
-                                            onChange={d=>{this.setState({firstDate:d})}}
-                                        />
-                                        <TimePicker
-                                            value={this.state.firstTime}
-                                            onChange={d=>{this.setState({firstTime:d})}}
-                                            format={"HH:mm"}
-                                        />
-                                    </Form.Item>
-                                    <Form.Item {...formItemLayout} label="Second Date:">
-                                        <DatePicker
-                                            value={this.state.secondDate}
-                                            onChange={d=>{this.setState({secondDate:d})}}
-                                        />
-                                        <TimePicker
-                                            value={this.state.secondTime}
-                                            onChange={d=>{this.setState({secondTime:d})}}
-                                            format={"HH:mm"}
-                                        />
-                                    </Form.Item>
-                                    <Button onClick={this.handleSubmit} type="primary" icon='experiment'>Create</Button>
-                                </Form>
-                            </Col>
-                            <Col span={12}>
-                                <h1>Manage</h1>
-                                {renderExecuteButton}
-                                <List
-                                    dataSource={items}
-                                    renderItem={this.renderItem}
-                                />
-                            </Col>
-                        </Row>
+
+                        <Col className="col span_1_of_2">
+                            <h1>Create</h1>
+                            <Form id="CreateForm">
+                                <Form.Item {...formItemLayout} label="Slots Per Day:">
+                                    <InputNumber
+                                        value={this.state.slotAmount}
+                                        onChange={e=>{this.setState({slotAmount:e.target.value})}}
+                                    />
+                                </Form.Item>
+                                <Form.Item {...formItemLayout} label="Time Per Slot:">
+                                    <InputNumber
+                                        value={this.state.slotDuration}
+                                        onChange={e=>{this.setState({slotDuration:e.target.value})}}
+                                    />
+                                </Form.Item>
+                                <Form.Item {...formItemLayout} label="Location:">
+                                    <Input
+                                        className="textInput"
+                                        value={this.state.location}
+                                        onChange={e=>{this.setState({location:e.target.value})}}
+                                    />
+                                </Form.Item>
+                                <Form.Item {...formItemLayout} label="First Date:">
+                                    <DatePicker
+                                        value={this.state.firstDate}
+                                        onChange={d=>{this.setState({firstDate:d})}}
+                                    />
+                                    <TimePicker
+                                        value={this.state.firstTime}
+                                        onChange={d=>{this.setState({firstTime:d})}}
+                                        format={"HH:mm"}
+                                    />
+                                </Form.Item>
+                                <Form.Item {...formItemLayout} label="Second Date:">
+                                    <DatePicker
+                                        value={this.state.secondDate}
+                                        onChange={d=>{this.setState({secondDate:d})}}
+                                    />
+                                    <TimePicker
+                                        value={this.state.secondTime}
+                                        onChange={d=>{this.setState({secondTime:d})}}
+                                        format={"HH:mm"}
+                                    />
+                                </Form.Item>
+                                <Button onClick={this.handleSubmit} type="primary" icon='experiment'>Create</Button>
+                            </Form>
+                        </Col>
+                        <Col className="col span_1_of_2">
+                            <h1>Manage</h1>
+                            {renderExecuteButton}
+                            <List
+                                dataSource={items}
+                                renderItem={this.renderItem}
+                            />
+                        </Col>
+
                     </Content>
                     <Footer/>
                 </Layout>

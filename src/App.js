@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import List from 'antd/lib/list';
+import Table from 'antd/lib/table';
 import Input from 'antd/lib/input';
 import DatePicker from 'antd/lib/date-picker';
 import TimePicker from 'antd/lib/time-picker';
@@ -145,11 +145,6 @@ class App extends Component {
         return date.format('YYYY-MM-DD') + 'T' + time.format('HH:mm') + ':00.00000Z';
     }
 
-    renderItem(item) {
-        let itemTime = (new Date(item.startTime)).toLocaleString('en-GB', {timeZone: 'America/New_York'});
-        return (<List.Item>{itemTime} {item.winner?item.winner:"Open: "+item.entryCount+" registered"}</List.Item>);
-    }
-
     render() {
         const formItemLayout = {
           labelCol: {
@@ -161,6 +156,35 @@ class App extends Component {
             sm: { span: 16 },
           },
         };
+
+        //Table
+        const columns = [{
+            title: "Date",
+            dataIndex: "startTime",
+            key: "startTime",
+            render: (d) => new Date(d).toLocaleDateString('en-US', {
+                timeZone: 'America/New_York',
+                month: 'numeric',
+                day: 'numeric'
+            })
+        },{
+            title: "Time",
+            dataIndex: "startTime",
+            key: "startTime",
+            render: (d) => new Date(d).toLocaleTimeString('en-GB', {
+                timeZone: 'America/New_York',
+                hour: 'numeric',
+                minute: 'numeric'
+            })
+        },{
+            title: "Entered",
+            dataIndex: "entryCount",
+            key: "entryCount"
+        },{
+            title: "Winner",
+            dataIndex: "winner",
+            key: "winner"
+        }];
 
         let items = this.state.currentLottery ? this.state.currentLottery.slots : [];
         let currentFinished = this.state.currentLottery ? this.state.currentLottery.isFinished : true;
@@ -183,7 +207,6 @@ class App extends Component {
                     </Modal>
                     <Content className="Dashboard">
                         <Col className="col span_1_of_2">
-                            <h1 className="SectionHeader">Create</h1>
                             <Form id="CreateForm">
                                 <Form.Item className="formItem" {...formItemLayout} label="Slots Per Day:">
                                     <InputNumber
@@ -244,15 +267,14 @@ class App extends Component {
                             </Form>
                         </Col>
                         <Col className="col span_1_of_2">
-                            <h1 className="SectionHeader">Manage</h1>
-                            <Row className="ButtonContainer">
+                            <Row className="ButtonContainer" id="ExecuteButtonContainer">
                                 {renderExecuteButton}
                             </Row>
-                            <List
+                            <Table
+                                className="ItemTable"
                                 dataSource={items}
-                                renderItem={this.renderItem}
-                                bordered
-                                className="ItemList"
+                                columns={columns}
+                                pagination={{pageSize:12}}
                             />
                         </Col>
                     </Content>

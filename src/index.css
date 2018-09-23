@@ -62,8 +62,8 @@ body {
     max-width: 400px;
 }
 
-.ItemList {
-    margin-top: 20px;
+#ExecuteButtonContainer {
+    margin: 20px;
 }
 
 .ButtonContainer {
@@ -76,11 +76,6 @@ body {
 
 .span_1_of_2 {
 	width: 49.2%;
-}
-
-.SectionHeader {
-    font-weight: bold;
-    text-align: center;
 }
 
 @media only screen and (max-width: 480px) {

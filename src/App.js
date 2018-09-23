@@ -10,6 +10,7 @@ import InputNumber from 'antd/lib/input-number';
 import Layout  from 'antd/lib/layout';
 import { Row, Col } from 'antd/lib/grid';
 import Modal from 'antd/lib/modal';
+import Switch from 'antd/lib/switch';
 const { Header, Footer, Content } = Layout;
 
 function getCookie(name) {
@@ -45,7 +46,8 @@ class App extends Component {
             secondDate: secondDate,
             secondTime: moment().hour(12).minutes(0).seconds(0),
             currentLottery: null,
-            modalVisible: false
+            modalVisible: false,
+            secondDateEnabled: true
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -92,10 +94,10 @@ class App extends Component {
     }
 
     handleSubmit() {
-        let startTimes = [
-            this.stringifyDate(this.state.firstDate,this.state.firstTime),
-            this.stringifyDate(this.state.secondDate,this.state.secondTime)
-        ];
+        let startTimes = [this.stringifyDate(this.state.firstDate,this.state.firstTime)];
+        if (this.state.secondDateEnabled) {
+            startTimes.push(this.stringifyDate(this.state.secondDate,this.state.secondTime));
+        }
 
         fetch('/createBatch/',
             {
@@ -193,7 +195,7 @@ class App extends Component {
                                     <InputNumber
                                         value={this.state.slotDuration}
                                         onChange={e=>{this.setState({slotDuration:e.target.value})}}
-                                    />
+                                    /> &nbsp; minutes
                                 </Form.Item>
                                 <Form.Item className="formItem" {...formItemLayout} label="Location:">
                                     <Input
@@ -217,11 +219,19 @@ class App extends Component {
                                     <DatePicker
                                         value={this.state.secondDate}
                                         onChange={d=>{this.setState({secondDate:d})}}
+                                        disabled={!this.state.secondDateEnabled}
                                     />
                                     <TimePicker
                                         value={this.state.secondTime}
                                         onChange={d=>{this.setState({secondTime:d})}}
                                         format={"HH:mm"}
+                                        disabled={!this.state.secondDateEnabled}
+                                    />
+                                    &nbsp; &nbsp;
+                                    <Switch
+                                        onChange={(val) => this.setState({secondDateEnabled:val})}
+                                        value={this.state.secondDateEnabled}
+                                        defaultChecked={this.state.secondDateEnabled}
                                     />
                                 </Form.Item>
                                 <div className="ButtonContainer">

@@ -187,14 +187,18 @@ class App extends Component {
                             <Form id="CreateForm">
                                 <Form.Item className="formItem" {...formItemLayout} label="Slots Per Day:">
                                     <InputNumber
-                                        value={this.state.slotAmount}
-                                        onChange={e=>{this.setState({slotAmount:e.target.value})}}
+                                        min = {1}
+                                        max = {50}
+                                        defaultValue={this.state.slotAmount}
+                                        onChange={val=>{this.setState({slotAmount:val})}}
                                     />
                                 </Form.Item>
                                 <Form.Item className="formItem" {...formItemLayout} label="Time Per Slot:">
                                     <InputNumber
-                                        value={this.state.slotDuration}
-                                        onChange={e=>{this.setState({slotDuration:e.target.value})}}
+                                        min = {1}
+                                        max = {999}
+                                        defaultValue={this.state.slotDuration}
+                                        onChange={val=>{this.setState({slotDuration:val})}}
                                     /> &nbsp; minutes
                                 </Form.Item>
                                 <Form.Item className="formItem" {...formItemLayout} label="Location:">

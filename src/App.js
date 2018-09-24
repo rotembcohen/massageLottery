@@ -270,6 +270,7 @@ class App extends Component {
                             <Row className="ButtonContainer" id="ExecuteButtonContainer">
                                 {renderExecuteButton}
                             </Row>
+                            <Row className="SectionSubheader">Total users entered: {this.state.currentLottery?this.state.currentLottery.entrySum:"0"}</Row>
                             <Table
                                 className="ItemTable"
                                 dataSource={items}

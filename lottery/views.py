@@ -17,7 +17,7 @@ from datetime import datetime, timedelta
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from django.db.models import Count, Min
+from django.db.models import Count, Min, Max
 
 mandrill_client = mandrill.Mandrill('O8Jtn3GLlDfYQT0rfauUvA')
 
@@ -115,7 +115,7 @@ class CreateSlotBatch(APIView):
         # for now, this is needed to force new lotteries to be id = 18
         # so they will show in the homepage
         #TODO: remove this when homepage is updated
-        oldLotteryId = Lottery.objects.count() + ID_OFFSET
+        oldLotteryId = Lottery.objects.aggregate(Max('id'))['id__max'] + 1
         oldLottery = Lottery.objects.get(pk=DEFAULT_LOTTERY_ID)
         oldLottery.id = oldLotteryId
         oldLottery.save()

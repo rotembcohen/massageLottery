@@ -115,7 +115,7 @@ class CreateSlotBatch(APIView):
         # for now, this is needed to force new lotteries to be id = 18
         # so they will show in the homepage
         #TODO: remove this when homepage is updated
-        oldLotteryId = Lottery.objects.aggregate(Max('id'))['id__max']
+        oldLotteryId = Lottery.objects.aggregate(Max('id'))['id__max'] + 1
         oldLottery = Lottery.objects.get(pk=DEFAULT_LOTTERY_ID)
         oldLottery.id = oldLotteryId
         oldLottery.save()
@@ -123,10 +123,8 @@ class CreateSlotBatch(APIView):
             s.lottery_id = oldLotteryId
             s.save()
         
-        idToDelete = lottery.id
         lottery.id = DEFAULT_LOTTERY_ID
         lottery.save()
-        Lottery.objects.get(pk=idToDelete).delete()
         # eof: remove this when homepage is updated
 
         startTimeArray = request.data['startTimes']

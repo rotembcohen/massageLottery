@@ -40,7 +40,7 @@ class App extends Component {
         this.state = {
             slotAmount: 12,
             slotDuration: 20,
-            location: 'Conference Room 3A',
+            location: 'Conference Room 2C',
             firstDate: firstDate,
             firstTime: moment().hour(11).minutes(0).seconds(0),
             secondDate: secondDate,

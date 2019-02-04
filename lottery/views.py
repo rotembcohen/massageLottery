@@ -88,6 +88,9 @@ class LotteryViewSet(viewsets.ModelViewSet):
                     #sends email
                     slotTimeStr = slot.startTime.astimezone(nycTz).strftime("%A, %B %d, %H:%M")
                     emailClient.sendEmail(slot.winner.email, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), lottery.location, slotTimeStr)
+                    #log email
+                    f = open("winners_log.txt", "a")
+                    f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Location: " + lottery.location+ " Date: " + slot.startTime.astimezone(nycTz).strftime("%Y-%m-%d %H:%M:%S") + " Winner: " + slot.winner.email + "\n")
                     
                 else:
                     winners[slot.pk] = None

@@ -1,0 +1,94 @@
+@import '~antd/dist/antd.css';
+
+.App {
+    align-items: center;
+    flex-direction: row;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.col {
+	display: block;
+	float:left;
+	margin: 1% 0 1% 1.6%;
+    padding-top: 20px;
+}
+
+.col:first-child { margin-left: 0; }
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
+    color: white;
+}
+
+.App-header {
+    background-color: #222;
+    height: 100px;
+    padding: 20px;
+    color: white;
+}
+
+.App-title {
+    font-size: 1.5em;
+    color: white;
+    font-weight: bold;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+@keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.Dashboard {
+    padding: 20px;
+}
+
+#CreateForm {
+    padding: 20px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+}
+
+.textInput {
+    max-width: 400px;
+}
+
+.SectionSubheader {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#ExecuteButtonContainer {
+    margin: 20px;
+}
+
+.ButtonContainer {
+    text-align: center;
+}
+
+.span_2_of_2 {
+	width: 100%;
+}
+
+.span_1_of_2 {
+	width: 49.2%;
+}
+
+@media only screen and (max-width: 480px) {
+	.span_2_of_2 {
+		width: 100%;
+	}
+	.span_1_of_2 {
+		width: 100%;
+	}
+}

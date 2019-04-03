@@ -145,6 +145,23 @@ class App extends Component {
         return date.format('YYYY-MM-DD') + 'T' + time.format('HH:mm') + ':00.00000Z';
     }
 
+    deleteSlot(id) {
+        fetch('/slot/' + id + '/',
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => {
+                console.log(response.status);
+                this.loadCurrentLottery();
+            })
+            .catch(error => console.error('Error:', error))
+    }
+
     render() {
         const formItemLayout = {
           labelCol: {
@@ -177,13 +194,18 @@ class App extends Component {
                 minute: 'numeric'
             })
         },{
-            title: "Entered",
+            title: "#",
             dataIndex: "entryCount",
             key: "entryCount"
         },{
             title: "Winner",
             dataIndex: "winner",
             key: "winner"
+        },{
+            title: "Delete",
+            dataIndex: "id",
+            key: "id",
+            render: (id) => <button type="danger" onClick={() => this.deleteSlot(id)}>X</button>
         }];
 
         let items = this.state.currentLottery ? this.state.currentLottery.slots : [];

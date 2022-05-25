@@ -9,7 +9,7 @@ Faker==0.8.17
 idna==2.7
 ipaddress==1.0.22
 mandrill==1.0.57
-PyJWT==1.6.4
+PyJWT==2.4.0
 python-dateutil==2.7.3
 pytz==2018.5
 requests==2.19.1
